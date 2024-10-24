@@ -1,19 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-STATUS_CHOICES = [
-    ('todo', 'To Do'),
-    ('in_progress', 'In Progress'),
-    ('done', 'Done'),
-]
 
-PRIORITY_CHOICES = [
-    ('low', 'Low'),
-    ('medium', 'Medium'),
-    ('high', 'High'),
-]
 
 class Task(models.Model):
+    STATUS_CHOICES = [
+        ('todo', 'To Do'),
+        ('in_progress', 'In Progress'),
+        ('done', 'Done'),
+    ]
+
+    PRIORITY_CHOICES = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+    ]
+
     title = models.CharField(max_length=255)  # Назва завдання
     description = models.TextField(blank=True, null=True)  # Опис завдання
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='todo')  # Статус
