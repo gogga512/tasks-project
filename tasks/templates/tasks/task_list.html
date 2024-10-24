@@ -5,14 +5,25 @@
 {% block header %}Список задач{% endblock %}
 
 {% block content %}
-    <form method="get">
-        {{ filter_form.as_p }}  <!-- Відображаємо форму фільтрації -->
-        <button type="submit" class="btn btn-primary">Фільтрувати</button>
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                {{ filter_form.status.label_tag }}
+                {{ filter_form.status }}
+            </div>
+            <div class="col-md-4">
+                {{ filter_form.priority.label_tag }}
+                {{ filter_form.priority }}
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary">Фільтрувати</button>
+            </div>
+        </div>
     </form>
 
-    <ul>
+    <ul class="list-group">
         {% for task in tasks %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'task_detail' task.id %}">{{ task.title }}</a> - {{ task.status }} - {{ task.priority }}
             </li>
         {% endfor %}

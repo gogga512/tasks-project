@@ -1,17 +1,32 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Створити задачу</title>
-</head>
-<body>
-    <h1>Створити нову задачу</h1>
-    <form method="post">
+{% extends 'base.html' %}
+
+{% block title %}Створити задачу{% endblock %}
+
+{% block header %}Створити задачу{% endblock %}
+
+{% block content %}
+    <form method="post" class="form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Зберегти</button>
+        <div class="mb-3">
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }}
+            {{ form.description(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.status.label(class="form-label") }}
+            {{ form.status(class="form-select") }}
+        </div>
+        <div class="mb-3">
+            {{ form.priority.label(class="form-label") }}
+            {{ form.priority(class="form-select") }}
+        </div>
+        <div class="mb-3">
+            {{ form.deadline.label(class="form-label") }}
+            {{ form.deadline(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Зберегти</button>
     </form>
-    <a href="{% url 'task_list' %}">Повернутися до списку</a>
-</body>
-</html>
+{% endblock %}
