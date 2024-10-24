@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Підтвердження видалення{% endblock %}
+
+{% block header %}Підтвердження видалення задачі{% endblock %}
+
+{% block content %}
+    <h2>Ви впевнені, що хочете видалити задачу "{{ task.title }}"?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a class="btn btn-secondary" href="{% url 'task_list' %}">Скасувати</a>
+    </form>
+{% endblock %}
