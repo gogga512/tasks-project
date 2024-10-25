@@ -1,8 +1,12 @@
 from django.contrib import admin
-from .models import Task
+from .models import Task, Comment
 
-@admin.register(Task)
+class CommentInline(admin.TabularInline):
+    model = Comment
+    extra = 1
+
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('title', 'status', 'priority', 'deadline', 'assigned_to', 'created_at')
-    list_filter = ('status', 'priority', 'assigned_to')
-    search_fields = ('title', 'description')
+    inlines = [CommentInline]
+
+admin.site.register(Task, TaskAdmin)
+admin.site.register(Comment)

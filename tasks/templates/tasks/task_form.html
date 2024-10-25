@@ -8,24 +8,24 @@
     <form method="post" class="form">
         {% csrf_token %}
         <div class="mb-3">
-            {{ form.title.label(class="form-label") }}
-            {{ form.title(class="form-control") }}
+            {{ form.title.label }}
+            {{ form.title }}
         </div>
         <div class="mb-3">
-            {{ form.description.label(class="form-label") }}
-            {{ form.description(class="form-control") }}
+            {{ form.description.label }}
+            {{ form.description }}
         </div>
         <div class="mb-3">
-            {{ form.status.label(class="form-label") }}
-            {{ form.status(class="form-select") }}
+            {{ form.status.label }}
+            {{ form.status }}
         </div>
         <div class="mb-3">
-            {{ form.priority.label(class="form-label") }}
-            {{ form.priority(class="form-select") }}
+            {{ form.priority.label }}
+            {{ form.priority }}
         </div>
         <div class="mb-3">
-            {{ form.deadline.label(class="form-label") }}
-            {{ form.deadline(class="form-control") }}
+            {{ form.deadline.label }}
+            {{ form.deadline }}
         </div>
         <button type="submit" class="btn btn-primary">Зберегти</button>
     </form>
