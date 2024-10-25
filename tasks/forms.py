@@ -20,7 +20,7 @@ class TaskFilterForm(forms.Form):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['content', 'file']
         widgets = {
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ваш коментар'}),
         }

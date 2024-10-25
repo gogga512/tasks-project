@@ -30,10 +30,11 @@ class Task(models.Model):
 
 
 class Comment(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='comments')  # Зв'язок з моделлю Task
-    author = models.ForeignKey(User, on_delete=models.CASCADE)  # Автор коментаря
-    content = models.TextField()  # Текст коментаря
-    created_at = models.DateTimeField(auto_now_add=True)  # Дата та час створення коментаря
+    task = models.ForeignKey(Task, related_name='comments', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    file = models.FileField(upload_to='comments/', blank=True, null=True)
 
     def __str__(self):
         return f'Comment by {self.author.username} on {self.task.title}'

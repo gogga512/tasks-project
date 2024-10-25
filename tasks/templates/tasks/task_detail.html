@@ -16,11 +16,10 @@
         {% for comment in task.comments.all %}
             <li class="list-group-item">
                 <strong>{{ comment.author.username }}</strong>: {{ comment.content }} <br>
-                <small>Створено: {{ comment.created_at }}</small>
-                {% if comment.author == request.user %}
-                    <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-secondary">Редагувати</a>
-                    <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-danger">Видалити</a>
+                {% if comment.file %}
+                    <a href="{{ comment.file.url }}">Завантажити файл</a>
                 {% endif %}
+                <small>Створено: {{ comment.created_at }}</small>
             </li>
         {% empty %}
             <li class="list-group-item">Немає коментарів.</li>
@@ -28,7 +27,7 @@
     </ul>
 
     <h3>Додати коментар</h3>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">  <!-- Додано enctype -->
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Додати коментар</button>

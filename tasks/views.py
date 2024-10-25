@@ -46,14 +46,14 @@ class TaskDetailView(DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        task = self.get_object()
-        form = CommentForm(request.POST)
+        self.object = self.get_object()
+        form = CommentForm(request.POST, request.FILES)
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.task = task
+            comment.task = self.object
             comment.author = request.user
             comment.save()
-            return redirect('task_detail', pk=task.pk)
+            return redirect('task_detail', pk=self.object.pk)
         return self.get(request, *args, **kwargs)
 
 

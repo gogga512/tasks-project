@@ -1,6 +1,9 @@
-from django.urls import path
 from .views import TaskListView, TaskDetailView, TaskCreateView, CommentDeleteView, CommentUpdateView
 from .views import TaskUpdateView, TaskDeleteView
+
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path
 
 urlpatterns = [
     path('', TaskListView.as_view(), name='task_list'),
@@ -11,3 +14,6 @@ urlpatterns = [
     path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment_edit'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
