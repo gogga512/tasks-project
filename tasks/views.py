@@ -3,11 +3,11 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import UpdateView
 
-from .forms import TaskFilterForm
+from .forms import TaskFilterForm, CommentForm
 from .models import Task
 from django.views.generic import DeleteView
 from .mixins import OwnerRequiredMixin
-
+from django.shortcuts import redirect
 
 
 class TaskListView(ListView):
@@ -37,6 +37,22 @@ class TaskDetailView(DetailView):
     model = Task
     template_name = 'tasks/task_detail.html'
     context_object_name = 'task'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()  # Додайте форму до контексту
+        return context
+
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.task = task
+            comment.author = request.user  # Встановіть автора коментаря
+            comment.save()
+            return redirect('task_detail', pk=task.pk)  # Перенаправлення на детальний перегляд задачі
+        return self.get(request, *args, **kwargs)  # Поверніть ту ж сторінку, якщо форма недійсна
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):

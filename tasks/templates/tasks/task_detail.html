@@ -1,29 +1,30 @@
 {% extends 'base.html' %}
 
-{% block title %}Детали задачи{% endblock %}
+{% block title %}Деталі задачі{% endblock %}
 
-{% block header %}Детали задачи{% endblock %}
+{% block header %}{{ task.title }}{% endblock %}
 
 {% block content %}
     <h2>{{ task.title }}</h2>
     <p>{{ task.description }}</p>
-    <p>Статус: {{ task.get_status_display }}</p>
-    <p>Приоритет: {{ task.get_priority_display }}</p>
-    <p>Дата создания: {{ task.created_at }}</p>
+    <p>Статус: {{ task.status }}</p>
+    <p>Пріорітет: {{ task.priority }}</p>
+    <p>Дедлайн: {{ task.deadline }}</p>
 
-    <h3>Комментарии</h3>
-    <ul>
+    <h3>Коментарі</h3>
+    <ul class="list-group">
         {% for comment in task.comments.all %}
-            <li><strong>{{ comment.author }}</strong>: {{ comment.content }}</li>
-        {% empty %}
-            <li>Комментариев нет</li>
+            <li class="list-group-item">
+                <strong>{{ comment.author.username }}</strong>: {{ comment.content }} <br>
+                <small>Створено: {{ comment.created_at }}</small>
+            </li>
         {% endfor %}
     </ul>
 
-    <h4>Добавить комментарий</h4>
+    <h3>Додати коментар</h3>
     <form method="post">
         {% csrf_token %}
-        {{ comment_form.as_p }}
-        <button type="submit" class="btn btn-primary">Добавить</button>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Додати коментар</button>
     </form>
 {% endblock %}

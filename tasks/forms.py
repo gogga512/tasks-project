@@ -1,5 +1,6 @@
 from django import forms
 from .models import Task
+from .models import Comment
 
 class TaskForm(forms.ModelForm):
     class Meta:
@@ -15,3 +16,11 @@ class TaskFilterForm(forms.Form):
         choices=Task.PRIORITY_CHOICES,
         widget=forms.Select(attrs={'class': 'form-select'})
     )
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ваш коментар'}),
+        }
