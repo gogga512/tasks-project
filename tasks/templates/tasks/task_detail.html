@@ -17,6 +17,10 @@
             <li class="list-group-item">
                 <strong>{{ comment.author.username }}</strong>: {{ comment.content }} <br>
                 <small>Створено: {{ comment.created_at }}</small>
+                {% if comment.author == request.user %}
+                    <a href="{% url 'comment_edit' comment.pk %}" class="btn btn-secondary">Редагувати</a>
+                    <a href="{% url 'comment_delete' comment.pk %}" class="btn btn-danger">Видалити</a>
+                {% endif %}
             </li>
         {% empty %}
             <li class="list-group-item">Немає коментарів.</li>
@@ -26,7 +30,7 @@
     <h3>Додати коментар</h3>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}  <!-- Відображення форми -->
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Додати коментар</button>
     </form>
 {% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Підтвердження видалення коментаря{% endblock %}
+
+{% block content %}
+    <h2>Підтвердити видалення коментаря</h2>
+    <p>Ви впевнені, що хочете видалити цей коментар?</p>
+    <p><strong>{{ comment.content }}</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Видалити</button>
+    </form>
+    <a href="{% url 'task_detail' comment.task.pk %}">Назад до задачі</a>
+{% endblock %}

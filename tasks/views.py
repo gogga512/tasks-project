@@ -1,13 +1,16 @@
+from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView, DetailView, CreateView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import UpdateView
 
 from .forms import TaskFilterForm, CommentForm
 from .models import Task
-from django.views.generic import DeleteView
 from .mixins import OwnerRequiredMixin
 from django.shortcuts import redirect
+
+from django.views.generic.edit import UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Comment
+from .forms import CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class TaskListView(ListView):
@@ -17,7 +20,6 @@ class TaskListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        # Фильтрация по параметрам GET запроса
         status = self.request.GET.get('status')
         priority = self.request.GET.get('priority')
         if status:
@@ -77,3 +79,31 @@ class TaskDeleteView(OwnerRequiredMixin, DeleteView):
     model = Task
     template_name = 'tasks/task_confirm_delete.html'
     success_url = reverse_lazy('task_list')
+
+
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'comment_edit.html'
+
+    def get_object(self, queryset=None):
+        comment = super().get_object(queryset)
+        if comment.author != self.request.user:
+            raise PermissionDenied  # Якщо не автор, то заборонити доступ
+        return comment
+
+    def get_success_url(self):
+        return reverse_lazy('task_detail', kwargs={'pk': self.object.task.pk})
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'comment_confirm_delete.html'
+
+    def get_object(self, queryset=None):
+        comment = super().get_object(queryset)
+        if comment.author != self.request.user:
+            raise PermissionDenied  # Якщо не автор, то заборонити доступ
+        return comment
+
+    def get_success_url(self):
+        return reverse_lazy('task_detail', kwargs={'pk': self.object.task.pk})
