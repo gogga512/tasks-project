@@ -18,13 +18,15 @@
                 <strong>{{ comment.author.username }}</strong>: {{ comment.content }} <br>
                 <small>Створено: {{ comment.created_at }}</small>
             </li>
+        {% empty %}
+            <li class="list-group-item">Немає коментарів.</li>
         {% endfor %}
     </ul>
 
     <h3>Додати коментар</h3>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.as_p }}  <!-- Відображення форми -->
         <button type="submit" class="btn btn-primary">Додати коментар</button>
     </form>
 {% endblock %}

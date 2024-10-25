@@ -40,7 +40,7 @@ class TaskDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = CommentForm()  # Додайте форму до контексту
+        context['form'] = CommentForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -49,10 +49,10 @@ class TaskDetailView(DetailView):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.task = task
-            comment.author = request.user  # Встановіть автора коментаря
+            comment.author = request.user
             comment.save()
-            return redirect('task_detail', pk=task.pk)  # Перенаправлення на детальний перегляд задачі
-        return self.get(request, *args, **kwargs)  # Поверніть ту ж сторінку, якщо форма недійсна
+            return redirect('task_detail', pk=task.pk)
+        return self.get(request, *args, **kwargs)
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
