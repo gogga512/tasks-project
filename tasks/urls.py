@@ -1,4 +1,5 @@
-from .views import TaskListView, TaskDetailView, TaskCreateView, CommentDeleteView, CommentUpdateView
+from .views import TaskListView, TaskDetailView, TaskCreateView, CommentDeleteView, CommentUpdateView, CustomLoginView, \
+    CustomLogoutView, RegistrationView
 from .views import TaskUpdateView, TaskDeleteView
 
 from django.conf import settings
@@ -13,6 +14,9 @@ urlpatterns = [
     path('task/<int:pk>/delete/', TaskDeleteView.as_view(), name='task_delete'),
     path('comment/<int:pk>/edit/', CommentUpdateView.as_view(), name='comment_edit'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
+    path('register/', RegistrationView.as_view(), name='register'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]
 
 if settings.DEBUG:

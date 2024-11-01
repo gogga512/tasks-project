@@ -1,16 +1,23 @@
 from django.core.exceptions import PermissionDenied
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView
 
 from .forms import TaskFilterForm, CommentForm
 from .models import Task
 from .mixins import OwnerRequiredMixin
-from django.shortcuts import redirect
 
 from django.views.generic.edit import UpdateView, DeleteView
-from django.urls import reverse_lazy
 from .models import Comment
 from .forms import CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.views.generic.edit import CreateView
+
+from django.contrib.auth import login
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views import View
 
 
 class TaskListView(ListView):
@@ -107,3 +114,27 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('task_detail', kwargs={'pk': self.object.task.pk})
+
+
+class RegistrationView(View):
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, 'registration/register.html', {'form': form})
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('task_list')
+        return render(request, 'registration/register.html', {'form': form})
+
+class CustomLoginView(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'registration/login.html'
+    success_url = reverse_lazy('task_list')
+
+class CustomLogoutView(LogoutView):
+    form_class = AuthenticationForm
+    template_name = 'registration/logout.html'
+    success_url = reverse_lazy('task_list')
